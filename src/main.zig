@@ -18,12 +18,12 @@ const Test = struct {
 };
 
 const TESTS = [_]Test {
-    // .{.name = "mov", .func = movLoop},
-    // .{.name = "nop3x1", .func = nop3x1Loop},
-    // .{.name = "nop1x3", .func = nop1x3Loop},
-    // .{.name = "nop1xN", .func = nop1xNLoop},
-    // .{.name = "cmp", .func = cmpLoop},
-    // .{.name = "dec", .func = decLoop},
+    .{.name = "mov", .func = movLoop},
+    .{.name = "nop3x1", .func = nop3x1Loop},
+    .{.name = "nop1x3", .func = nop1x3Loop},
+    .{.name = "nop1xN", .func = nop1xNLoop},
+    .{.name = "cmp", .func = cmpLoop},
+    .{.name = "dec", .func = decLoop},
     .{.name = "jumpy", .func = jumpyLoop},
 };
 
