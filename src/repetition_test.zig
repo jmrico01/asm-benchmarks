@@ -47,8 +47,11 @@ pub const Tester = struct {
         };
     }
 
-    pub fn reset(self: *Tester, tryForSeconds: u64, targetBytes: u64) void
+    pub fn reset(self: *Tester, name: []const u8, tryForSeconds: u64, targetBytes: u64) void
     {
+        if (name.len > 0) {
+            std.debug.print("-> Test: {s}\n", .{name});
+        }
         self.mode = .testing;
         self.tryForRdtsc = tryForSeconds * self.rdtscFreq;
         self.startRdtsc = rdtsc();
@@ -61,7 +64,7 @@ pub const Tester = struct {
         if (self.mode == .testing) {
             const currentRdtsc = rdtsc();
 
-            if (self.openedBlocks != 0) {
+            if (self.openedBlocks > 0) {
                 if (self.openedBlocks != self.closedBlocks) {
                     self.err("Unbalanced beginTime/endTime", .{});
                 }
@@ -105,13 +108,13 @@ pub const Tester = struct {
     pub fn beginTime(self: *Tester) void
     {
         self.openedBlocks += 1;
-        self.currentTestRdtsc -= rdtsc();
+        self.currentTestRdtsc = @subWithOverflow(self.currentTestRdtsc, rdtsc())[0];
     }
 
     pub fn endTime(self: *Tester) void
     {
         self.closedBlocks += 1;
-        self.currentTestRdtsc += rdtsc();
+        self.currentTestRdtsc = @addWithOverflow(self.currentTestRdtsc, rdtsc())[0];
     }
 
     pub fn countBytes(self: *Tester, bytes: u64) void
