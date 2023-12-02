@@ -10,6 +10,7 @@ section .text
 
 movLoop:
     xor rax, rax
+align 16
 .loop:
     mov [rdx + rax], al
     inc rax
@@ -19,6 +20,7 @@ movLoop:
 
 nop3x1Loop:
     xor rax, rax
+align 16
 .loop:
     db 0x0f, 0x1f, 0x00 ; 3-byte nop
     inc rax
@@ -28,6 +30,7 @@ nop3x1Loop:
 
 nop1x3Loop:
     xor rax, rax
+align 16
 .loop:
     nop
     nop
@@ -39,6 +42,7 @@ nop1x3Loop:
 
 nop1xNLoop:
     xor rax, rax
+align 16
 .loop:
     ; 12 1-byte nops here
     nop
@@ -60,6 +64,7 @@ nop1xNLoop:
 
 cmpLoop:
     xor rax, rax
+align 16
 .loop:
     inc rax
     cmp rax, rcx
@@ -67,6 +72,7 @@ cmpLoop:
     ret
 
 decLoop:
+align 16
 .loop:
     dec rcx
     jnz .loop
@@ -74,6 +80,7 @@ decLoop:
 
 jumpyLoop:
     xor rax, rax
+align 16
 .loop:
     mov bl, [rdx + rax]
     test bl, bl
