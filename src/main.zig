@@ -29,6 +29,13 @@ const TESTS = [_]Test {
 
 fn runTest(t: Test, tester: *rep.Tester, buf: []u8) void
 {
+    var prng = std.rand.DefaultPrng.init(12839547838);
+    const random = prng.random();
+    for (0..buf.len) |i| {
+        const zeroChanceIn256 = 128;
+        buf[i] = if (random.int(u8) < zeroChanceIn256) 0 else 1;
+    }
+
     tester.reset(t.name, testTimeSeconds, buf.len);
     while (tester.isTesting()) {
         tester.beginTime();
@@ -49,14 +56,7 @@ pub fn main() !void
     std.log.info("RDTSC frequency {}", .{cpuFreq});
     var tester = rep.Tester.init(cpuFreq);
 
-    var prng = std.rand.DefaultPrng.init(12839547838);
-    const random = prng.random();
-
     var buf = try allocator.alloc(u8, 256 * 1024 * 1024);
-    for (0..buf.len) |i| {
-        const zeroChanceIn256 = 128;
-        buf[i] = if (random.int(u8) < zeroChanceIn256) 0 else 1;
-    }
 
     for (TESTS) |t| {
         runTest(t, &tester, buf);
