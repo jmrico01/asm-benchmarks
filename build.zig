@@ -13,11 +13,11 @@ pub fn build(b: *std.Build) !void
     });
     std.log.info("Assembling with nasm", .{});
     if (execCheckTermStdout(&[_][]const u8 {
-        "nasm", "-f", "win64", "src/test.asm"
+        "nasm", "-f", "win64", "src/loops.asm", "-o", "zig-cache/loops.obj"
     }, b.allocator) == null) {
         return error.nativeCompile;
     }
-    exe.addObjectFile(.{.path = "src/test.obj"});
+    exe.addObjectFile(.{.path = "zig-cache/loops.obj"});
     // exe.linkLibC();
     b.installArtifact(exe);
 
